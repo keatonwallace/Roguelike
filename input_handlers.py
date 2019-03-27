@@ -44,8 +44,11 @@ def handle_player_turn_keys(key):
     elif key_char == 'f':
         return {'drop_inventory': True}
 
-    if key.vk == libtcod.KEY_ENTER and key.lalt:
-        # Alt+Enter: toggle full screen
+    elif key.vk == libtcod.KEY_ENTER:
+        return {'take_stairs': True}
+
+    if key.vk == key.lalt:
+        # Alt: toggle full screen
         return {'fullscreen': True}
 
     elif key.vk == libtcod.KEY_ESCAPE:
