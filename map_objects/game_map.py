@@ -125,7 +125,9 @@ class GameMap:
 
         monster_chances = {
             'orc': 80,
-            'troll': from_dungeon_level([[15, 3], [30, 5], [60, 7]], self.dungeon_level)
+            'troll': from_dungeon_level([[15, 3], [30, 5], [60, 7]], self.dungeon_level),
+            'ghost': 50
+            #'gold_goblin': from_dungeon_level([[10, 7]], self.dungeon_level)
         }
 
         item_chances = {
@@ -149,6 +151,12 @@ class GameMap:
                     ai_component = BasicMonster()
                     
                     monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True,
+                                     render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
+                elif monster_choice == 'ghost':
+                    fighter_component = Fighter(hp=10, defense=0, power=4, xp=20)
+                    ai_component = BasicMonster()
+                    
+                    monster = Entity(x, y, 'g', libtcod.gold, 'Ghost', blocks=True,
                                      render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
                 else:
                     fighter_component = Fighter(hp=30, defense=2, power=8, xp=100)

@@ -41,4 +41,11 @@ class ConfusedMonster:
             results.append({'message': Message('The {0} is no longer confused!'.format(self.owner.name), libtcod.red)})
 
         return results
+
+class FearedMonster(object):
+    """docstring for FearedMonster"""
+    def __init__(self, arg):
+        super(FearedMonster, self).__init__()
+        self.arg = arg
+         
     
