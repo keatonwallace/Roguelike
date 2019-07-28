@@ -1,6 +1,6 @@
 import libtcodpy as libtcod
 
-from components.ai import ConfusedMonster
+from components.ai import ConfusedMonster, FearedMonster
 
 from game_messages import Message
 
@@ -90,6 +90,33 @@ def cast_confuse(*args, **kwargs):
             entity.ai = confused_ai
 
             results.append({'consumed': True, 'message': Message('The eyes of the {0} look vacant, as he starts to stumble around!'.format(entity.name), libtcod.light_green)})
+
+            break
+    else:
+        results.append({'consumed': False, 'message': Message('There is no targetable enemy at that location.', libtcod.yellow)})
+
+    return results
+
+def cast_fear(*args, **kwargs):
+    entities = kwargs.get('entities')
+    fov_map = kwargs.get('fov_map')
+    target_x = kwargs.get('target_x')
+    target_y = kwargs.get('target_y')
+
+    results = []
+
+    if not libtcod.map_is_in_fov(fov_map, target_x, target_y):
+        results.append({'consumed': False, 'message': Message('You cannot target a tile outside your field of view.', libtcod.yellow)})
+        return results
+
+    for entity in entities:
+        if entity.x == target_x and entity.y == target_y and entity.ai:
+            fear_ai = FearedMonster(entity.ai, 10)
+
+            fear_ai.owner = entity
+            entity.ai = fear_ai
+
+            results.append({'consumed': True, 'message': Message('The eyes of the {0} widen in fear, as he starts to back away'.format(entity.name), libtcod.light_green)})
 
             break
     else:

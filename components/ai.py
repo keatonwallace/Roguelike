@@ -44,6 +44,10 @@ class ConfusedMonster:
 
 class FearedMonster:
     """docstring for FearedMonster"""
+    def __init__(self, previous_ai, number_of_turns=10):
+        self.previous_ai = previous_ai
+        self.number_of_turns = number_of_turns
+    
     def take_turn(self, target, fov_map, game_map, entities):
         results = []
     

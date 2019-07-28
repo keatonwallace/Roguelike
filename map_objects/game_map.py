@@ -11,7 +11,7 @@ from components.stairs import Stairs
 
 from entity import Entity
 from game_messages import Message
-from item_functions import cast_confuse, cast_fireball, cast_lightning, heal
+from item_functions import cast_confuse, cast_fireball, cast_lightning, cast_fear, heal
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
 from random_utils import from_dungeon_level, random_choice_from_dict
@@ -137,7 +137,8 @@ class GameMap:
             'shield': from_dungeon_level([[15, 8]], self.dungeon_level),
             'lightning_scroll': from_dungeon_level([[25, 4]], self.dungeon_level),
             'fireball_scroll': from_dungeon_level([[25, 6]], self.dungeon_level),
-            'confusion_scroll': from_dungeon_level([[10, 2]], self.dungeon_level)
+            'confusion_scroll': from_dungeon_level([[10, 2]], self.dungeon_level),
+            'fear_scroll': from_dungeon_level([[10, 3]], self.dungeon_level)
         }
 
         for i in range(number_of_monsters):
@@ -149,7 +150,7 @@ class GameMap:
                 monster_choice = random_choice_from_dict(monster_chances)
                 if monster_choice == 'orc':
                     fighter_component = Fighter(hp=20, defense=0, power=4, xp=35)
-                    ai_component = FearedMonster()
+                    ai_component = BasicMonster()
                     
                     monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True,
                                      render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
@@ -194,6 +195,11 @@ class GameMap:
                     item_component = Item(use_function=cast_confuse, targeting=True, targeting_message=Message(
                         'Left-click an enemy to confuse it, or right-click to cancel.', libtcod.light_cyan))
                     item = Entity(x, y, '#', libtcod.light_pink, 'Confusion Scroll', render_order=RenderOrder.ITEM,
+                                  item=item_component)
+                elif item_choice == 'fear_scroll':
+                    item_component = Item(use_function=cast_fear, targeting=True, targeting_message=Message(
+                        'Left-click an enemy to fear it, or right-click to cancel.', libtcod.light_cyan))
+                    item = Entity(x, y, '#', libtcod.light_green, 'Fear Scroll', render_order=RenderOrder.ITEM,
                                   item=item_component)
                 else:
                     item_component = Item(use_function=cast_lightning, damage=40, maximum_range=5)
