@@ -2,6 +2,7 @@ import libtcodpy as libtcod
 from random import randint
 
 from components.ai import BasicMonster
+from components.ai import FearedMonster
 from components.equipment import EquipmentSlots
 from components.equippable import Equippable
 from components.fighter import Fighter
@@ -148,7 +149,7 @@ class GameMap:
                 monster_choice = random_choice_from_dict(monster_chances)
                 if monster_choice == 'orc':
                     fighter_component = Fighter(hp=20, defense=0, power=4, xp=35)
-                    ai_component = BasicMonster()
+                    ai_component = FearedMonster()
                     
                     monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True,
                                      render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
